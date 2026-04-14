@@ -18,7 +18,9 @@ const ProjectCard = ({ repo }: { repo: Repo }) => (
                 <span className="text-yellow-400 text-sm flex-shrink-0 ml-2">★ {repo.stargazers_count}</span>
             )}
         </div>
-        <p className="text-gray-400 text-sm flex-1 overflow-hidden line-clamp-3">{repo.description ?? 'Bez opisa'}</p>
+        <p className="text-gray-400 text-sm flex-1 overflow-y-auto scrollbar-hide pr-1">
+            {repo.description ?? 'No description'}
+        </p>
         {repo.language && (
             <span className="text-cyan-400 font-mono text-sm">{repo.language}</span>
         )}

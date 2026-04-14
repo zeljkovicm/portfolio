@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react'
-import { skills } from '../data/skills'
+import { useEffect, useRef } from 'react';
+import { skills } from '../data/skills';
 
-const row1 = skills.slice(0, Math.ceil(skills.length / 2))
-const row2 = skills.slice(Math.ceil(skills.length / 2))
+const row1 = skills.slice(0, Math.ceil(skills.length / 2));
+const row2 = skills.slice(Math.ceil(skills.length / 2));
 
 const SkillItem = ({ skill }: { skill: { name: string; icon: string } }) => (
     <div className="flex-shrink-0 flex flex-col items-center gap-2 px-6">
@@ -15,28 +15,38 @@ const InfiniteRow = ({ items, reverse = false }: { items: typeof skills; reverse
     const trackRef = useRef<HTMLDivElement>(null)
     const posRef = useRef(0)
     const rafRef = useRef<number>(0)
+    const singleWidthRef = useRef(0)
 
     useEffect(() => {
         const track = trackRef.current
         if (!track) return
 
-        const singleWidth = track.scrollWidth / 3
-        posRef.current = reverse ? -singleWidth : 0
-        track.style.transform = `translateX(${posRef.current}px)`
+        const init = () => {
+            singleWidthRef.current = track.scrollWidth / 3;
+            posRef.current = reverse ? -singleWidthRef.current : 0;
+            track.style.transform = `translateX(${posRef.current}px)`
+        };
 
-        const speed = 0.4;
+        const timeout = setTimeout(init, 100)
+
+        const speed = 0.4
 
         const animate = () => {
-            if (!track) return;
+            if (!track || singleWidthRef.current === 0) {
+                rafRef.current = requestAnimationFrame(animate)
+                return;
+            }
+
+            const single = singleWidthRef.current;
 
             if (reverse) {
                 posRef.current += speed;
                 if (posRef.current >= 0) {
-                    posRef.current = -singleWidth;
+                    posRef.current = -single;
                 }
             } else {
                 posRef.current -= speed;
-                if (posRef.current <= -singleWidth) {
+                if (posRef.current <= -single) {
                     posRef.current = 0;
                 }
             }
@@ -46,8 +56,13 @@ const InfiniteRow = ({ items, reverse = false }: { items: typeof skills; reverse
         }
 
         rafRef.current = requestAnimationFrame(animate)
-        return () => cancelAnimationFrame(rafRef.current)
+
+        return () => {
+            clearTimeout(timeout)
+            cancelAnimationFrame(rafRef.current)
+        }
     }, [reverse])
+
     const tripled = [...items, ...items, ...items]
 
     return (
@@ -58,8 +73,8 @@ const InfiniteRow = ({ items, reverse = false }: { items: typeof skills; reverse
                 ))}
             </div>
         </div>
-    )
-}
+    );
+};
 
 const Skills = () => {
     return (
