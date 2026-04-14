@@ -1,8 +1,9 @@
 import profileImg from '../assets/profile.png';
-import cv from '../assets/cv.pdf';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { SiKaggle } from 'react-icons/si'
 import { skills } from '../data/skills'
+
+const cv = "https://drive.google.com/uc?export=download&id=1O9J9y4bsgGRGMH46hhFw1_qxL_B1TvmO"
 
 const positions = [
     { top: '3%', left: '17%', animationDelay: '0s', animationDuration: '7s' },
@@ -27,6 +28,8 @@ const positions = [
 ]
 
 const Hero = () => {
+
+
     return (
         <section id="about" className="min-h-screen flex items-center pt-20 relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/20 via-gray-950 to-purple-950/20 pointer-events-none"></div>
@@ -73,7 +76,7 @@ const Hero = () => {
                         <a href="#projects" className="border border-cyan-400 text-cyan-400 px-8 py-3 rounded-lg font-semibold hover:bg-cyan-400/10 transition-all duration-200 hover:scale-105">
                             My projects
                         </a>
-                        <a href={cv} download="Milan_Zeljkovic_CV.pdf" className="border border-gray-600 text-gray-300 px-8 py-3 rounded-lg font-semibold hover:border-gray-400 hover:text-white transition-all duration-200 hover:scale-105">
+                        <a href={cv} target="_blank" rel="noopener noreferrer" className="border border-gray-600 text-gray-300 px-8 py-3 rounded-lg font-semibold hover:border-gray-400 hover:text-white transition-all duration-200 hover:scale-105">
                             Download CV ↓
                         </a>
                     </div>
